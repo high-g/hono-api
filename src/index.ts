@@ -19,6 +19,12 @@ app.get('/posts/:id', (c) => {
   return c.json({ id, title: `投稿 ${id}` })
 })
 
+app.post('/posts', async (c) => {
+  const body = await c.req.json()
+  console.log('受け取ったデータ：', body)
+  return c.json({ id: 3, ...body }, 201)
+})
+
 serve({ fetch: app.fetch, port: 3001 }, (info) => {
   console.log(`Server is running on http://localhost:${info.port}`)
 })
