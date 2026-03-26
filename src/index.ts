@@ -1,9 +1,19 @@
+import 'dotenv/config'
+import { createClient } from '@libsql/client'
+import { PrismaLibSql } from '@prisma/adapter-libsql'
+import { PrismaClient } from './generated/prisma/client'
 import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
 import { z } from 'zod'
 import { zValidator } from '@hono/zod-validator'
 
+const libsql = createClient({
+  url: process.env.DATABASE_URL ?? 'file:./dev.db',
+})
+const adapter = new PrismaLibSql(libsql)
+
 const app = new Hono()
+const prisma = new PrismaClient()
 
 const PostSchema = z.object({
   title: z.string().min(1, 'タイトルは1文字以上必要です'),
