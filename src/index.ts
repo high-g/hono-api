@@ -21,6 +21,7 @@ const routes = app
   })
   .post('/posts', zValidator('json', PostSchema), async (c) => {
     const body = c.req.valid('json')
+    // console.log('Received post data:', body)
     const post = await prisma.post.create({ data: body })
     return c.json(post, 201)
   })
