@@ -8,14 +8,16 @@ const app = new Hono()
 
 const PostSchema = z.object({
   title: z.string().min(1, 'タイトルは1文字以上必要です'),
+  content: z.string().optional(),
+  authorId: z.number().int(),
 })
 
 const routes = app
-  .get('/posts', (c) => {
-    return c.json([
-      { id: 1, title: '最初の投稿' },
-      { id: 2, title: '2番目の投稿' },
-    ])
+  .get('/posts', async (c) => {
+    const posts = await prisma.post.findMany({
+      include: { author: true },
+    })
+    return c.json(posts)
   })
   .post('/posts', zValidator('json', PostSchema), async (c) => {
     const body = await c.req.json()
