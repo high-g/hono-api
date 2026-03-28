@@ -20,13 +20,14 @@ const routes = app
     return c.json(posts)
   })
   .post('/posts', zValidator('json', PostSchema), async (c) => {
-    const body = await c.req.json()
-    console.log('受け取ったデータ：', body)
-    return c.json({ id: 3, ...body }, 201)
+    const body = c.req.valid('json')
+    const post = await prisma.post.create({ data: body })
+    return c.json(post, 201)
   })
-  .get('/posts/:id', (c) => {
-    const id = c.req.param('id')
-    return c.json({ id, title: `投稿 ${id}` })
+  .get('/posts/:id', async (c) => {
+    const id = Number(c.req.param('id'))
+    const post = await prisma.post.findUnique({ where: { id }, include: { author: true } })
+    return c.json(post)
   })
 
 export type AppType = typeof routes
