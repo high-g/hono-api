@@ -1,10 +1,12 @@
 import { Hono } from 'hono'
 import { serve } from '@hono/node-server'
 import { prismaPostsRoutes } from './routes/prismaPosts'
+import { drizzlePostRoutes } from './routes/drizzlePosts'
 
 const app = new Hono()
 
 app.route('/posts', prismaPostsRoutes)
+app.route('/drizzle/posts', drizzlePostRoutes)
 
 export type AppType = typeof app
 
