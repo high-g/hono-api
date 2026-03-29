@@ -36,7 +36,7 @@ const routes = app
     const post = await prisma.post.update({ where: { id }, data: body })
     return c.json(post)
   })
-  .delete('/posts/:id', zValidator('json', PostSchema.partial()), async (c) => {
+  .delete('/posts/:id', async (c) => {
     const id = Number(c.req.param('id'))
     await prisma.post.delete({ where: { id } })
     return c.body(null, 204)
