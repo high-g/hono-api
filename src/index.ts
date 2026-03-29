@@ -28,18 +28,27 @@ const routes = app
   .get('/posts/:id', async (c) => {
     const id = Number(c.req.param('id'))
     const post = await prisma.post.findUnique({ where: { id }, include: { author: true } })
+    if (!post) return c.json({ error: 'Not found' }, 404)
     return c.json(post)
   })
   .put('/posts/:id', zValidator('json', PostSchema.partial()), async (c) => {
     const id = Number(c.req.param('id'))
     const body = c.req.valid('json')
-    const post = await prisma.post.update({ where: { id }, data: body })
-    return c.json(post)
+    try {
+      const post = await prisma.post.update({ where: { id }, data: body })
+      return c.json(post)
+    } catch {
+      return c.json({ error: 'Not found' }, 404)
+    }
   })
   .delete('/posts/:id', async (c) => {
     const id = Number(c.req.param('id'))
-    await prisma.post.delete({ where: { id } })
-    return c.body(null, 204)
+    try {
+      await prisma.post.delete({ where: { id } })
+      return c.body(null, 204)
+    } catch {
+      return c.json({ error: 'Not found' }, 404)
+    }
   })
 
 export type AppType = typeof routes
