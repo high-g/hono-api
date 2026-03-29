@@ -30,6 +30,17 @@ const routes = app
     const post = await prisma.post.findUnique({ where: { id }, include: { author: true } })
     return c.json(post)
   })
+  .put('/posts/:id', zValidator('json', PostSchema.partial()), async (c) => {
+    const id = Number(c.req.param('id'))
+    const body = c.req.valid('json')
+    const post = await prisma.post.update({ where: { id }, data: body })
+    return c.json(post)
+  })
+  .delete('/posts/:id', zValidator('json', PostSchema.partial()), async (c) => {
+    const id = Number(c.req.param('id'))
+    await prisma.post.delete({ where: { id } })
+    return c.body(null, 204)
+  })
 
 export type AppType = typeof routes
 
