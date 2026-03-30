@@ -4,8 +4,8 @@ import { prismaPostsRoutes } from "./routes/prismaPosts";
 import { drizzlePostRoutes } from "./routes/drizzlePosts";
 
 const app = new Hono()
-  .route("/posts", prismaPostsRoutes)
-  .route("/drizzle/posts", drizzlePostRoutes);
+  .route("/prisma", prismaPostsRoutes)
+  .route("/drizzle", drizzlePostRoutes);
 
 export type AppType = typeof app;
 
