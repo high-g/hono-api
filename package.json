@@ -2,15 +2,17 @@
   "name": "hono-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "dev": "tsx watch src/index.ts"
-  },
   "keywords": [],
-  "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.32.1",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "lint": "oxlint",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
+  },
   "dependencies": {
     "@hono/node-server": "^1.19.11",
     "@hono/zod-validator": "^0.7.6",
@@ -33,5 +35,6 @@
     "prisma": "^7.5.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
-  }
+  },
+  "packageManager": "pnpm@10.32.1"
 }
