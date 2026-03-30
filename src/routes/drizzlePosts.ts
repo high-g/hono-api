@@ -32,7 +32,7 @@ export const drizzlePostRoutes = new Hono()
     if (!post) return c.json({ message: 'Not found' }, 404)
     return c.json(post)
   })
-  .put('/:id', zValidator('json', PostSchema), async (c) => {
+  .put('/:id', zValidator('json', PostSchema.partial()), async (c) => {
     const id = Number(c.req.param('id'))
     const body = c.req.valid('json')
     const result = await db.update(posts).set(body).where(eq(posts.id, id)).returning()
